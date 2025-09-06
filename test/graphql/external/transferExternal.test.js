@@ -3,6 +3,7 @@ const { expect, use } = require('chai');
 
 const chaiExclude = require('chai-exclude');
 use(chaiExclude);
+require('dotenv').config();
 
 describe('Testes de Transferência', () => {
 
@@ -22,7 +23,7 @@ describe('Testes de Transferência', () => {
 
     it('Validar que é possível transferir grana entre duas contas', async () => {
         const respostaEsperada = require('../fixture/respostas/trasferencia/validarQueEPossivelTransferirGranaEntreDuasContas.json')
-        const respostaTransferencia = await request('http://localhost:4000/graphql')
+        const respostaTransferencia = await request(process.env.BASE_URL_GRAPHQL)
             .post('')
             .set('Authorization', `Bearer ${token}`)
             .send(createTransfer);
@@ -36,7 +37,7 @@ describe('Testes de Transferência', () => {
 
     it('Validar que não é possível transferir de uma conta que não possui saldo suficiente', async () => {
         createTransfer.variables.value = 10000.01
-        const respostaTransferencia = await request('http://localhost:4000/graphql')
+        const respostaTransferencia = await request(process.env.BASE_URL_GRAPHQL)
 
             .post('')
             .set('Authorization', `Bearer ${token}`)
